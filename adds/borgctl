@@ -28,6 +28,7 @@ declare -A SERVER
 declare -A BACKUPS
 declare -A BACKUPIDS
 SHA1BORGCTL="$(sha1sum ${BASH_SOURCE[0]} | cut -d " " -f 1)"
+init_read=0
 
 BORGBACKUP_DOCKER_RUN_SHELL_OPTION=${BORGBACKUP_DOCKER_RUN_SHELL_OPTION:-"-ti --rm"}
 BORGBACKUP_DOCKER_RUN_BACKUP_OPTION=${BORGBACKUP_DOCKER_RUN_BACKUP_OPTION:-"--rm --sig-proxy"}
@@ -81,6 +82,8 @@ done
 
 # parser for inifile
 help_init_from_ini() {
+	[[ $init_read == 1 ]] && return 0
+	init_read=1
 	source $SHINI
 
 	__shini_parsed () {
